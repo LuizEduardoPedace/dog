@@ -129,6 +129,7 @@ Note como a faixa de preço dos cães pode variar bastante, chegando a preços d
 Podemos usufruir do boxplot para obter informação visual de como os dados estão distribuídos:
 
 ![](/assets/analysis/boxplot_price_outliers.png)
+
 *Boxplot dos preços para as raças de cães.*
 
 Note a presença de ***outliers***, o que explica o valor da média ser maior do que a mediana. Além do mais, **50%** dos dados estão entre (**\$700.00**, **\$1350.00**), a partir daí os preços começam a dar grandes saltos como é possível ver pela largura da parte de cima do boxplot.
@@ -171,6 +172,7 @@ outliers_trait = df_2[df_2['BreedName'].isin(outliers['BreedName'])].groupby('Tr
 ```
 
 ![](/assets/analysis/hbar_outliers_count_trait.png)
+
 *Gráfico de barras da contagem de traços para os outliers.*
 
 Traços como **inteligente** e **vivaz** são os mais comuns dentre as raças de cães mais caras. Mais adiante vamos obter o preço médio para cada traço de temperamento e averiguaremos se estes mesmos traços estão no Top 10.
@@ -199,11 +201,13 @@ df_out['Price'].describe().round(2)
 A média diminui e se torna mais próxima da mediana como era de se esperar. O valor máximo agora é de **\$2250.00**, note que a variância continua bastante elevada, iremos tentar entender o motivo disso.
 
 ![](/assets/analysis/histogram_price.png)
+
 *Histograma do preço das raças de cães sem os outliers.*
 
 Existe uma predominância dos preços entre **\$700.00** e **\$1100.00** como é possível ver pelo pico do histograma. Note também que há um acúmulo de valores entre **\$350.00** e **\$600.00**. Podemos nos pergunta se os dados acima são bem descritos por uma distribuição normal, para isso, podemos efetuar uma **análise visual** bem como um teste de estatística.
 
 ![](/assets/analysis/kde_price.png)
+
 *Kernel Density Estimation para o preço das raças de cães.*
 
 Visualmente percebemos que não se aproxima de uma distribuição normal. Vamos utilizar o ***Quantile-Quantile plot***:
@@ -215,6 +219,7 @@ stats.probplot(df_out['Price'], dist='norm', plot=plt)
 ```
 
 ![](/assets/analysis/q_q_plot_price.png)
+
 *Quantile-Quantile plot para o preço das raças de cães.*
 
 Pela visualização *quartil-quartil* os dados definitivamente não são bem descritos por uma distribuição normal. Porém, podemos ainda utilizar o **Teste de Anderson-Darling**:
@@ -247,6 +252,7 @@ df_group = df_group.explode('Group', ignore_index=True)
 ```
 
 ![](/assets/analysis/boxplot_group.png)
+
 *Boxplot do preço das raças por Grupo.*
 
 Vemos que grupos como **Guardião** e **Trabalhador** possuem uma média de preço maior do que a média, enquanto **Cão Farejador** está bem abaixo. Visualmente podemos explicar a dispersão dos dados devido à variação de preço entre os grupos, no entanto, podemos efetuar um teste estatístico para quantizar essa variação. Porquanto, utilizaremos o **Teste de Kruskal-Wallis** para esta análise.
@@ -289,6 +295,7 @@ Iniciaremos fazendo uma análise descritiva.
 Percebemos que os valores para a média e mediana são bem inferiores com relação ao *dataset* original. A média está acima da mediana, o que pode demonstrar a existência de *outliers* e a variância permanece elevada dentro do próprio grupo.
 
 ![](/assets/analysis/boxplot_scenthound.png)
+
 *Boxplot da faixa de preço do grupo Scenthound.*
 
 Como analisado anteriormente, há a existência de *outliers*, enquanto que a média está à parte da maior parte dos dados, revelando que algumas raças estão com um preço muito acima da maioria. Por esse motivo, vamos encontrar os *outliers* e separá-los dos demais dados do grupo.
@@ -323,6 +330,7 @@ Indubitavelmente podemos **descartar** a **hipótese nula** e inferir que a méd
 Vamos agora separar os grupos por **nível de vigilância** das raças. Neste *dataset* a vigilância é uma **variável categórica** de 1 a 6.
 
 ![](/assets/analysis/boxplot_watchdog.png)
+
 *Boxplot do preço das raças por Nível de Vigilância.*
 
 Pela visualização, a média de preço não varia tanto como na separação por Grupo. Vamos efetuar o **Teste de Kruskal-Wallis** para analisar se podemos inferir que essa separação está atrelada à dispersão dos dados.:
@@ -337,6 +345,7 @@ Pela visualização, a média de preço não varia tanto como na separação por
 Para um **valor de significância** de $\alpha=.05$ podemos **descartar** a **hipótese nula** e inferir que as médias de cada grupo diferem. Notemos ainda que pode existir uma certa **correlação** entre a média de preços e o nível de vigilância:
 
 ![](/assets/analysis/scatter_price_x_watchdog.png)
+
 *Gráfico do Preço Médio em função no Nível de Vigilância.*
 
 Ao considerarmos a média de preço em função do nível de vigilância e testar a normalidade dos dados, podemos inferir que eles são **bem descritos** por uma **distribuição normal**. Os testes feitos são os mesmos e estão no [*jupyter notebook*](/main.ipynb). Com isso, podemos utilizar a **Correlação de Pearson** (ao considerarmos o nível de vigilância uma **variável métrica**):
@@ -361,6 +370,7 @@ Por mais que a correlação $r$ de Pearson tenha sido elevada, devido à **falta
 No *dataset* possuímos as variáveis métricas ⚖️ **Peso** e 👑 **Popularidade**, vamos testar a correlação entre estas variáveis e o preço:
 
 ![](/assets/analysis/heatmap_corr.png)
+
 *Mapa de calor das correlações entre Preço, Peso e Popularidade .*
 
 Pelo mapa de calor acima vemos que não há nenhuma correlação significante entre as três variáveis.
@@ -371,6 +381,7 @@ Pelo mapa de calor acima vemos que não há nenhuma correlação significante en
 Por fim, vamos obter alguns *insights* a partir da análise dos traços de temperamento. Primeiramente, vamos entender como estes estão distribuídos:
 
 ![](/assets/analysis/pie_top10_traits.png)
+
 *Gráfico de pizza para os 10 traços mais comuns.*
 
 Vemos que o traço **inteligente** é o mais comum, o que demonstra não estar atrelado necessariamente às raças caninas mais caras como vimos anteriormente. Vamos averiguar isto mais a fundo obtendo o preço médio atrelado a cada traço:
@@ -395,6 +406,7 @@ Traços como **Briguento** e **Impetuoso** estão entre os mais caros custando a
 Vamos agora visualizar o boxplot para os 15 traços mais comuns e testar se isso explica a dispersão de variância encontrada nos dados.
 
 ![](/assets/analysis/boxplot_trait.png)
+
 *Boxplot do preço em função dos 15 traços mais comuns.*
 
 Vemos que a média de preço dos traços não dista de forma sifnificante, ao utilizarmos o Teste de Kruskal-Wallis obtivemos que:
