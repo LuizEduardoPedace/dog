@@ -15,6 +15,8 @@ Por esse motivo, a partir de um *dataset* criei um ***dashboard*** com filtros r
 
 - **PowerBI:** O software utilizado para construir um *dashboard* com filtros interativos;
 
+- **Power Pivot:** O ambiente utilizado para criar relações entre as tabelas e medidas úteis;
+
 - **Visual Studio Code:** O ambiente interativo utilizado para criar os códigos com facilidade e rapidez;
 
 - **Python:** A linguagem de programação utilizada para realizar a análise a partir da manipulação de dados, construção de visualizações e usufruo de técnicas estatísticas. Foram utilizadas bibliotecas como: numpy, pandas, seaborn, matplotlib, scipy;
@@ -98,6 +100,44 @@ df_2 = pd.read_csv('dog_trait.csv', delimiter=';')
 
 # Dashboard 📶
 
+Antes da análise, confira o *dashboard* que eu criei:
+
+📌 [Dashboard](https://app.powerbi.com/view?r=eyJrIjoiZTdjM2U1OTUtOWUyOC00MjY0LWEzNzktN2Q3ZWZmZGNmMTFmIiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9)
+
+![](/assets/dashboard/dashboard_gif.gif)
+
+Você poderá escolher diversos filtros e ele retornará a raça de cão que mais atende ao seu perfil.
+Você encontrará os seguintes **filtros**:
+
+- 💲 **Preço médio**
+
+- 🐾 **Grupo**
+
+- ⚖️ **Peso**
+
+- ⚠️ **Nível de vigilância**
+
+- 🎭 **Temperamento**
+
+Para construí-lo, importei o Power Query desenvolvido anteriormente no **Power BI**.  Foi necessário a criação de uma nota tabela para filtrarmos as raças por grupo:
+
+![](/assets/dashboard/dog_group_table.PNG)
+
+Posteriormente, como inserimos filtros a partir de três tabelas diferentes, foi necessário utilizar o **Power Pivot** para criar relações entre as tabelas a partir do **nome das raças**:
+
+![](/assets/dashboard/power_pivot_relationships.PNG)
+
+Com isso, estamos prontos para a criação do *dashboard*. Ao lado esquerdo encontra-se uma lista das raças de cães que **atendem aos requisitos** e seu respectivo **preço**:
+
+![](/assets/dashboard/list_of_breeds.PNG)
+
+No canto superior encontra-se a raça de cão **mais cara** que atende aos requisitos e seu respectivo preço. Necessitou-se a criação de uma medida para encontrarmos o nome:
+
+```dax
+top_breed = MAXX(TOPN(1,dog_characteristics,dog_characteristics[Price],DESC),dog_characteristics[BreedName])
+```
+
+![](/assets/dashboard/expensive_breed.PNG)
 
 
 # Análise 📊
